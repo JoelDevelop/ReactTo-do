@@ -4,10 +4,18 @@ import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css';
 import Form from "./Form";
 import List from "./List";
+import { mdiAccountSupervisorOutline } from "@mdi/js";
 
 M.AutoInit();
 
 export default class PrimaryCard extends Component {
+
+	constructor(props){
+		super(props);
+		this.state={
+			'refresh':0
+		}
+	}
 
 	componentDidMount() {
 		document.addEventListener('DOMContentLoaded', function () {
@@ -16,13 +24,19 @@ export default class PrimaryCard extends Component {
 		});
 	}
 
+	refreshList(){
+		const nextCount = this.state.refresh++;
+		this.setState({
+			refresh:nextCount
+		});
+	}
 	render() {
 		return (
 			<div className="row">
 				<div className="col s12 m8">
 					<div className="card-panel ">
-						<Form></Form>
-						<List></List>
+						<Form props={this.refreshList}></Form>
+						<List props={this.state.refresh}></List>
 					</div>
 				</div>
 			</div>

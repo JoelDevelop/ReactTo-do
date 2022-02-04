@@ -1,63 +1,38 @@
-import { Component } from "react";
+import { useEffect, useState } from "react";
 import 'materialize-css/dist/css/materialize.min.css';
 // simport 'materialize-css/dist/js/materialize.min.js';
 import M from 'materialize-css';
 import Row from "./Row";
 
 
-export default class List extends Component {
+export default function List() {
 
-    componentDidMount() {
-        
-        // fetch(`http://localhost:8080/actividades/listar`,{
-        //     method: 'GET', // or 'PUT'
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //     },
-        // })
-        // .then(response => console.log(response))
+    const [todos,setTodos] = useState([]);
+    const url= "http://localhost:8080/actividades/listar";
 
-        // fetch('http://localhost:8080/actividades/listar', { mode: 'no-cors'})
-        // .then(blob => blob.json())
-        // .then(data => {
-        //     console.table(data);
-        //     return data;
-        // })
-        // .catch(e => {
-        //     console.log(e);
-        //     return e;
-        // });
-        /*
-        fetch('http://localhost:8080/actividades/listar', {
-        headers:{'Content-Type': 'application/json'},
-        mode: 'no-cors'})
-        .then((response)=>{ 
-            console.log(response.text);
-            console.log(response);
-            if(!response.ok){
-                throw new Error('Failed to fetch.');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            // setfetchedData(data);
-            // console.log(data)
-        })
-        .catch(err=>{
-            // console.log(err)
-        });*/
-
+    const fecthList = async () => {
+        const response = await fetch(url)
+        // console.log(response.status);
+        const responseJson = await response.json()
+        setTodos(responseJson)
+        //console.log(responseJson,"response")
     }
 
-    render() {
-        return (
-            <>
-                <div className="row">
-                    <div className="col s12 m12">
-                        <Row></Row>
-                    </div>
-                </div>
-            </>
-        );
-    }
+    useEffect(() => {
+        fecthList();
+    }, []);
+    
+    return (
+        <div className="row">
+            <div className="col s12 m12">
+                {
+                    todos.map((todo,index)=>{
+                        // console.log("Intento",todo);
+                        return <Row props={todo} key={index}></Row>;
+                    })
+                }
+            </div>
+        </div>
+    );
 }
+
