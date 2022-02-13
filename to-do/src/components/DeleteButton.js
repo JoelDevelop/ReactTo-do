@@ -17,7 +17,7 @@ export default function DeleteButton (params) {
         });
     }, []);
 
-    const id = params.props;
+    const id = params.props.id;
     const modalName="modal"+id;
     const refmodalName="#"+modalName;
     // console.log(refmodalName);
@@ -35,7 +35,9 @@ export default function DeleteButton (params) {
 
         const response = await fetch(url+id, settings)
         const responseJson = await response
-        console.log(responseJson)
+        console.log("elemento eliminado")
+        params.props.onRefresh();
+        // console.log(responseJson)
     }
 
     return (

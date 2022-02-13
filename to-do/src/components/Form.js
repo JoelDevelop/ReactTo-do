@@ -52,11 +52,8 @@ export default function Form (params){
     }
 
     const fetchSave = () => {
-        // if(count!=0){
-            saveActivity()
-        // }else{
-        //     setCount(1);
-        // }
+        saveActivity()
+        setValueDescription("")
     }
 
     const classofButton = "waves-effect waves-light col s12 btn "+stateButton;
@@ -66,7 +63,7 @@ export default function Form (params){
             <div className="card-panel col s12 m7">
                 <span>
                     <div className="input-field col s12 m8">
-                        <input id="description" type="text" className="validate" onChange={e=>setValueDescription(e.target.value)}/>
+                        <input id="description" type="text" className="validate" value={valueDescription} onChange={e=>setValueDescription(e.target.value)}/>
                         <label htmlFor="description">Descripcion</label>
                     </div>
                     <div className="col s12 m4 valign-wrapper">

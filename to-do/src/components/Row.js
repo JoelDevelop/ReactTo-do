@@ -11,8 +11,7 @@ export default function Row (param) {
 
     M.AutoInit();
 
-    const props = param.props;
-
+    const props = param.props.todo;
     const [detalle,setDetalle] = useState(props.detalle);
     const [id,setId] = useState(props.id);
     const [checked,setChecked] = useState((props.estado>0));
@@ -22,17 +21,24 @@ export default function Row (param) {
     const url = "http://localhost:8080/actividades/actualizar";
     
     const inputProps = (checked)?{"checked":"checked"}:{"style":{}};
-    console.log(inputProps,checked);
 
     useEffect(() => {
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('.autocomplete');
             var instances = M.Autocomplete.init(elems, {});
           });
-        const props = param.props;
+
+          //Set valores
+          //setDetalle(param.props.detalle)
+
+        // const props = param.props;
     }, []);
 
-
+    useEffect(() => {
+        setId(param.props.todo.id)
+        setDetalle(param.props.todo.detalle)
+        setChecked((param.props.todo.estado>0))
+    }, [param]);
 
     const updateChecked = async () => {
 
@@ -50,14 +56,8 @@ export default function Row (param) {
         };
 
         const response = await fetch(url, settings)
-        // console.log(response.status);
         const responseJson = await response
-        //console.log(responseJson);
-        //console.log(responseJson,"response")
-        // inputChecked.current.selected;
     }
-
-
 
     useEffect(() => {
         //Actualizar base de datos  
@@ -75,10 +75,9 @@ export default function Row (param) {
         setEditDetails(!editDetails)
     }
     
-
     return (
     <>
-        <div className="row" key={id}> 
+        <div className="row" > 
             <div className="col s12 m12">
                 <div className="card-panel teal lighten-3">
                     <div className="row">
@@ -92,8 +91,8 @@ export default function Row (param) {
                             </p>
                         </div>
                         <div className="col m3 s3"><button className="waves-effect waves-light btn" style={{margin:"0px 5px"}} onClick={onClickEdit}><Icon style={{margin:"5px 0px"}} path={mdiFileEdit} size={1} color="white"/></button></div>
-                        <div className="col m2 s3"><DeleteButton props={id}></DeleteButton></div>
-                    </div>
+                        <div className="col m2 s3"><DeleteButton props={{id:id, onRefresh:param.props.onRefresh}}></DeleteButton></div>
+                    </div> 
                 </div>
             </div>
         </div>

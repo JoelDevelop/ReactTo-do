@@ -5,22 +5,26 @@ import M from 'materialize-css';
 import Row from "./Row";
 
 
-export default function List() {
+export default function List(params) {
 
     const [todos,setTodos] = useState([]);
+    const [numberRefresh,setNumberRefresh] = useState(0);
     const url= "http://localhost:8080/actividades/listar";
 
-    const fecthList = async () => {
+    // console.log("mapeando lista", params.props)
+
+    const fecthList = async (numberRefresh) => {
+        console.log("Update List")
         const response = await fetch(url)
         // console.log(response.status);
         const responseJson = await response.json()
         setTodos(responseJson)
-        //console.log(responseJson,"response")
+        setNumberRefresh(numberRefresh++)
     }
 
     useEffect(() => {
-        fecthList();
-    }, []);
+        fecthList(numberRefresh);
+    }, [params.props]);
     
     return (
         <div className="row">
@@ -28,8 +32,8 @@ export default function List() {
                 {
                     todos.map((todo,index)=>{
                         // console.log("Intento",todo);
-                        return <Row props={todo} key={index}></Row>;
-                    })
+                        return <Row props={{todo:todo,onRefresh:params.onRefresh}} key={index} ></Row>;
+                    }) 
                 }
             </div>
         </div>
