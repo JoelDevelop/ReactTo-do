@@ -27,11 +27,6 @@ export default function Row (param) {
             var elems = document.querySelectorAll('.autocomplete');
             var instances = M.Autocomplete.init(elems, {});
           });
-
-          //Set valores
-          //setDetalle(param.props.detalle)
-
-        // const props = param.props;
     }, []);
 
     useEffect(() => {
